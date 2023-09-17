@@ -1,17 +1,38 @@
 import express from "express"
 import cors from "cors"
+import * as fs from 'fs';
+import csv from 'csv-parser'; 
 
 const app = express()
+
 
 app.use(cors({
     origin: "http://localhost:5500"
 }))
 
 app.get("/", (req, res) => {
-    res.send({
-        x: [1, 2, 3],
-        y: [4, 5, 6]
+    
+    let results = []; 
+    fs.createReadStream('cases_age.csv')
+    .pipe(csv())
+    .on('data', (data) => results.push(data))
+    .on('end', () => {
+      res.send({
+        x: results.map((result) => result.week),
+        y: results.map((result) => result.capita_0_4)
+
     }).status(200)
+      // [
+      //   { NAME: 'Daffy Duck', AGE: '24' },
+      //   { NAME: 'Bugs Bunny', AGE: '22' }
+      // ]
+    });
+
+    // const data = fs.readFileSync("./cases_age.csv" );
+        // console.log(data);
+
+    
+    
 })
 
 
