@@ -7,7 +7,7 @@ const app = express()
 
 
 app.use(cors({
-    origin: "http://localhost:5500"
+    origin: "http://localhost:5500/DSSD/frontend/index.html"
 }))
 
 app.get("/", (req, res) => {
